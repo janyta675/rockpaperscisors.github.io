@@ -62,8 +62,8 @@ body, html {
 }
 
 .image {
-    width: 50%;
-    height: 110px;
+    width: 100px;
+    height: 90px;
     cursor: pointer;
 }
 
@@ -94,7 +94,7 @@ input[type="number"] {
     border: 1px solid #ae00ff;
     border-radius: 5px;
     margin-bottom: 1px;
-    width: 15%;
+    width: 60%;
     max-width: 200px;
 }
 
@@ -131,11 +131,15 @@ label{
     font-size: 30px;
     font-weight: 400;
 }
-h1{
-    font-size: 50px;
+.balance{
+    font-size: 30px;
     font-weight: 400;
-    padding-top: 50px;
-    padding-bottom: 30px;
+}
+h1{
+    font-size: 30px;
+    font-weight: 400;
+    padding-top: 30px;
+    padding-bottom: 10px;
 }
 .errors{
     color:red;
