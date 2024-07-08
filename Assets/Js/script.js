@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const placeBetButton = document.querySelector('.placebet');
 
     // object images
-    const rockimg = document.getElementById('rock');
-    const paperimg = document.getElementById('paper');
-    const scissorimg = document.getElementById('scissors');
+    const rockImg = document.getElementById('rock');
+    const paperImg = document.getElementById('paper');
+    const scissorImg = document.getElementById('scissors');
     const resultImage = document.querySelector('.result-image');
 
     let balance = 5000; // initial balance
@@ -33,30 +33,62 @@ document.addEventListener('DOMContentLoaded', function () {
             return 'It\'s a tie!';
         }
         if (
-            (userChoice === 'rock' && computerChoice === 'scissors') ||
+            (userChoice === 'rock' && computerChoice === 'scissor') ||
             (userChoice === 'paper' && computerChoice === 'rock') ||
-            (userChoice === 'scissors' && computerChoice === 'paper')
+            (userChoice === 'scissor' && computerChoice === 'paper')
         ) {
             return 'You win!';
         }
         return 'You lose!';
     }
 
+    // Function to remove selected class from all images
+    function clearSelection() {
+        rockImg.classList.remove('selected');
+        paperImg.classList.remove('selected');
+        scissorImg.classList.remove('selected');
+    }
+
     // Event listeners for user selection
-    rockimg.addEventListener('click', function () {
+    rockImg.addEventListener('click', function () {
+        clearSelection();
+        rockImg.classList.add('selected');
         userSelection = 'rock';
         selectionErrors.textContent = '';
     });
 
-    paperimg.addEventListener('click', function () {
+    paperImg.addEventListener('click', function () {
+        clearSelection();
+        paperImg.classList.add('selected');
         userSelection = 'paper';
         selectionErrors.textContent = '';
     });
 
-    scissorimg.addEventListener('click', function () {
+    scissorImg.addEventListener('click', function () {
+        clearSelection();
+        scissorImg.classList.add('selected');
         userSelection = 'scissors';
         selectionErrors.textContent = '';
     });
+
+    // Function to animate the result
+    function animateResult(computerChoice, callback) {
+        const choices = ['rock', 'paper', 'scissor'];
+        let index = 0;
+        const animationDuration = 2000; // Duration of the animation in ms
+        const intervalTime = 100; // Time between image changes in ms
+
+        const interval = setInterval(() => {
+            resultImage.src = `./Assets/img/${choices[index]}.png`;
+            index = (index + 1) % choices.length;
+        }, intervalTime);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            resultImage.src = `./Assets/img/${computerChoice}.png`;
+            callback();
+        }, animationDuration);
+    }
 
     // Event listener for placing bet
     placeBetButton.addEventListener('click', function () {
@@ -80,20 +112,22 @@ document.addEventListener('DOMContentLoaded', function () {
         // Get computer's choice
         const computerChoice = getComputerChoice();
 
-        // Determine winner
-        const result = determineWinner(userSelection, computerChoice);
+        // Animate the result
+        animateResult(computerChoice, () => {
+            // Determine winner
+            const result = determineWinner(userSelection, computerChoice);
 
-        // Update balance
-        if (result === 'You win!') {
-            balance += betAmount*1.5;
-        } else if (result === 'You lose!') {
-            balance -= betAmount;
-        }
+            // Update balance
+            if (result === 'You win!' ) {
+                balance += betAmount;
+            } else if (result === 'You lose!' && result==='It\'s a tie!') {
+                balance -= betAmount;
+            }
 
-        // Update UI
-        resultElement.textContent = result;
-        resultImage.src = `./Assets/img/${computerChoice}.png`;
-        updateBalance();
+            // Update UI
+            resultElement.textContent = result;
+            updateBalance();
+        });
     });
 
     // Initialize balance display
