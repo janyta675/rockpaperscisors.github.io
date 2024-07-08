@@ -120,7 +120,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Update balance
             if (result === 'You win!' ) {
                 balance += betAmount;
-            } else if (result === 'You lose!' && result==='It\'s a tie!') {
+            } else if (result === 'You lose!') {
+                balance -= betAmount;
+            }else {
                 balance -= betAmount;
             }
 
